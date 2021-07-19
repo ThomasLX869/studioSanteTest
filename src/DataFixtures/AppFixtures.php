@@ -55,6 +55,7 @@ class AppFixtures extends Fixture
             $product[$i] = new Product();
             $product[$i]->setName($faker->word);
             $product[$i]->setActive(true);
+            $product[$i]->setUrl('http://' . $product[$i]->getName() . '.com');
             $product[$i]->setDescription($faker->sentence($nbWords = 7, $variableNbWords = true));
             //Attribute a brand created upper
             $product[$i]->setBrand($brands[$i % 3]);
