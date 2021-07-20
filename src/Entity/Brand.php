@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BrandRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BrandRepository::class)
@@ -21,7 +22,10 @@ class Brand
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:product"})
+     * @Assert\Length(
+     *      max = 255,
+     * )
+     * @Groups({"read:product", "write:product"})
      */
     private $name;
 

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -18,8 +19,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     paginationItemsPerPage=5,
  *     normalizationContext={"groups" : "read:product"},
  *     denormalizationContext={"groups" : "write:product"},
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "delete", "put"},
  * )
  */
 class Product
@@ -39,36 +40,46 @@ class Product
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"read:product", "write:product"})
      */
     private $active;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:product"})
+     * @Assert\NotBlank
+     * @Groups({"read:product", "write:product"})
+     * @Assert\Length(
+     *      max = 255,
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:product"})
+     * @Assert\Length(
+     *      max = 255,
+     * )
+     * @Groups({"read:product", "write:product"})
      */
     private $url;
 
     /**
      * @ORM\Column(type="text"),
-     * @Groups({"read:product"})
+     * @Assert\NotBlank
+     * @Groups({"read:product", "write:product"})
      */
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class)
-     * @Groups({"read:product"})
+     * @ORM\ManyToOne(targetEntity=Brand::class, cascade={"persist"})
+     * @Assert\NotBlank
+     * @Groups({"read:product", "write:product"})
      */
     private $brand;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class)
-     * @Groups({"read:product"})
+     * @ORM\ManyToMany(targetEntity=Category::class, cascade={"persist"})
+     * @Groups({"read:product", "write:product"})
      */
     private $categories;
 
