@@ -7,10 +7,20 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     attributes={
+ *       "order"={"id":"DESC"},
+ *     },
+ *     paginationItemsPerPage=5,
+ *     normalizationContext={"groups" : "read:product"},
+ *     denormalizationContext={"groups" : "write:product"},
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
  */
 class Product
 {
@@ -18,6 +28,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:product"})
      */
     private $id;
 
@@ -28,26 +39,31 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:product"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:product"})
      */
     private $url;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text"),
+     * @Groups({"read:product"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class)
+     * @Groups({"read:product"})
      */
     private $brand;
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class)
+     * @Groups({"read:product"})
      */
     private $categories;
 

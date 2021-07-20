@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BrandRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BrandRepository::class)
@@ -19,6 +21,7 @@ class Brand
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:product"})
      */
     private $name;
 
