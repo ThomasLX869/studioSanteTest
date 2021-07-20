@@ -33,6 +33,11 @@ class Product
     private $id;
 
     /**
+     * @Groups({"read:product"})
+     */
+    private $md5Id;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $active;
@@ -159,5 +164,10 @@ class Product
         $this->categories->removeElement($category);
 
         return $this;
+    }
+
+    public function getmd5Id(): ?string
+    {
+        return md5($this->id);
     }
 }
